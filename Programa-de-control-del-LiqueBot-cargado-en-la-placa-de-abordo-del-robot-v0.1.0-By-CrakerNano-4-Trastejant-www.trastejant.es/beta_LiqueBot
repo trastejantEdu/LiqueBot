@@ -1,0 +1,122 @@
+/*
+################################################################################################################################################################################
+                                                              Programa de control del LiqueBot
+                                                          cargado en la placa de abordo del robot
+################################################################################################################################################################################                                   
+#####################################################################     v0.1.0      ##########################################################################################
+################################################################################################################################################################################
+#################################################################  By CrakerNano 4 Trastejant  #################################################################################
+################################################################################################################################################################################
+                                                                    www.trastejant.es
+*/
+
+#include <Servo.h>
+
+//Objetos de la libreria servo para controlar los servos del robot
+Servo servoL;
+Servo servoR;
+Servo direccion;
+
+void setup(){
+  
+  //Declaramos los pines en los que se encuentran los servos
+  servoR.attach(9);
+  servoL.attach(10);
+  direccion.attach(11);
+  
+  //Posiciones iniciales de los servos
+  direccion.write(90);//centrado
+  servoL.write(90);//parado
+  servoR.write(90);//parado
+  delay(1000);
+  
+  //Configuramos la conexion via Bluetooth
+  Serial.begin(9600);  
+  Serial.println("Ready");
+  Serial.flush();
+
+  
+
+}
+
+void loop(){
+// Esperamos ha recibir datos.
+  if (Serial.available()){
+    
+    // La funcion read() devuelve un caracter
+    int command = Serial.read();
+    Serial.flush();
+    
+    // Comprobamos el comando recibido y mostramos la acción que se debe hacer
+    char orden = char(command);
+    switch (command) {
+      case 'A':
+          Serial.println("ALL OK");
+          break;
+      case '0':
+          Serial.println("Parar/OFF");
+          para();
+      case '4':
+          Serial.println("Avanza");
+          avanza();
+          break;
+      case '6':
+          Serial.println("Gira a la Derecha");
+          derecha();
+          break;
+      case '3':
+          Serial.println("Retrocede");
+          retrocede();
+          break;
+       case '9':
+          Serial.println("Gira a la Izquierda");
+          izquierda();
+          break;
+       default:
+         Serial.print("Comando incorrecto");
+         Serial.println(command);
+         break;
+         
+
+       
+    }
+    delay(10);
+  }
+
+}
+
+void para(){
+  servoL.write(90);
+  delay(10);
+  servoR.write(90);
+  delay(10);
+}
+
+void avanza(){
+  servoL.write(0);
+  delay(10);
+  servoR.write(180);
+  delay(10);
+}
+
+void retrocede(){
+  servoL.write(180);
+  delay(10);
+  servoR.write(0);
+  delay(10);
+}
+
+void derecha(){
+  direccion.write(0);
+  delay(10);
+}
+
+void izquierda(){
+  direccion.write(180);
+  delay(10);
+}
+
+void centrar(){
+  direccion.write(90);
+  delay(10);
+}
