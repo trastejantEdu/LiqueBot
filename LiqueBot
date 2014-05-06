@@ -1,0 +1,146 @@
+#include <Servo.h> //Llamada a la libreria Servo
+#include "DHT.h" //Llamada a la libreria DHT(Sensor de humedad)
+
+//Configuracion del sensor de humedad
+#define DHTPIN 6 //Declaramos que el sensor esta en el pin 6
+#define DHTTYPE DHT11 //Definimos el modelo del sensor
+DHT dht(DHTPIN, DHTTYPE); //Definimos la variable que utilizaremos para comunicarnos con el sensor
+//Configuracion del sensor de CO
+#define coSensor A0
+
+//Declaracion de objetos tipo servo
+Servo servoL;
+Servo servoR;
+Servo direccion;
+
+void setup(){
+
+  dht.begin(); //Inicializamos el sensor de Humedad
+  
+  //Declaracion de pines de los servos
+  servoR.attach(9);
+  servoL.attach(10);
+  direccion.attach(11);
+  
+  //Posiciones iniciales de los servos
+  direccion.write(88);
+  servoL.write(90);
+  servoR.write(90);
+  delay(1000);
+  
+  //Configuramos la conexion via Bluetooth
+  Serial.begin(9600);
+  Serial.println("Ready");
+  Serial.flush();
+}
+
+void loop(){
+// Esperamos ha recibir datos.
+  if (Serial.available()){
+    
+    // La funcion read() devuelve un caracter
+    int command = Serial.read();
+    Serial.flush();
+    
+    // Comprobamos el comando recibido y mostramos la acción que se debe hacer
+    char orden = char(command);
+    switch (command) {
+      case 'A':
+          Serial.println("ALL OK");
+          break;
+      case '0':
+          Serial.println("Parar/OFF");
+          para();
+      case '4':
+          Serial.println("Avanza");
+          avanza();
+          break;
+      case '6':
+          Serial.println("Gira a la Derecha");
+          derecha();
+          break;
+      case '3':
+          Serial.println("Retrocede");
+          retrocede();
+          break;
+       case '9':
+          Serial.println("Gira a la Izquierda");
+          izquierda();
+          break;
+       default:
+         para();
+         Serial.print("Comando incorrecto");
+         Serial.println(command);
+         break;        
+    }
+    
+    delay(10);
+  }
+    Serial.print("T:");
+    Serial.print(leerTemperatura());
+    Serial.println("C");
+    
+    Serial.print("H:");
+    Serial.print(leerHumedad());
+    Serial.println("%");
+    
+    Serial.print("CO:");
+    Serial.print(leerMonoxido(coSensor));
+    Serial.println("ppm");
+}
+
+void para(){
+  servoL.write(90);
+  delay(10);
+  servoR.write(90);
+  delay(10);
+}
+
+void avanza(){
+  direccion.write(88);
+  delay(10);
+  servoL.write(0);
+  delay(10);
+  servoR.write(180);
+  delay(10);
+}
+
+void retrocede(){
+  direccion.write(88);
+  delay(10);
+  servoL.write(180);
+  delay(10);
+  servoR.write(0);
+  delay(10);
+}
+
+void derecha(){
+  direccion.write(45);
+  delay(10);
+}
+
+void izquierda(){
+  direccion.write(135);
+  delay(10);
+}
+
+void centrar(){
+  direccion.write(92);
+  delay(10);
+}
+
+float leerTemperatura(){
+return dht.readTemperature();
+}
+
+float leerHumedad(){
+return dht.readHumidity();
+}
+
+float leerMonoxido(int sensor){
+return analogRead(sensor);
+}
+
+float leerDioxido(int sensor){
+return analogRead(sensor);
+}
