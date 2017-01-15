@@ -1,3 +1,5 @@
+![Liquebot](http://www.trastejant.com/wp-content/uploads/2016/10/liqueBot-1-1024x683.jpg)
+
 ##¿Qué es LiqueBot?
 
 LiqueBot esta pensado para jugar, pero es mucho más que un juguete.
@@ -7,7 +9,7 @@ Es un robot que podrás controlar desde tu teléfono o tablet vía Bluetooth y o
 ##Prototipo de LiqueBot
 
 LiqueBot permite a los padres saber si el sitio donde su hijo/a esta jugando tiene un aire puro o por el contrarío esta contaminado, y hacerlo mientras el pequeño juega y se divierte. 
-
+![Liquebot](http://www.elnortedecastilla.es/elnortedecastilla/multimedia/201404/26/media/robolid09.jpg)
 Controlarlo es fácil y divertido, cuenta con una sencilla APP que podrás instalar gratuitamente en tu teléfono o tablet (De momento solo disponible para Android). 
 
 ##Aporta información al mundo
